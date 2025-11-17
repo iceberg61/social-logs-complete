@@ -2,11 +2,12 @@ import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import User from "@/models/User";
-import connectDB from "@/libs/mongodb";
+import dbConnect from "@/lib/dbConnect";
 
 export async function POST(req) {
   try {
-    await connectDB();
+    await dbConnect(); // FIXED
+
     const { token, password } = await req.json();
 
     if (!token || !password) {
@@ -22,6 +23,7 @@ export async function POST(req) {
     }
 
     const user = await User.findById(decoded.userId);
+
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
