@@ -64,7 +64,9 @@ export function AuthProvider({ children }) {
 
       if (!res.ok) throw new Error(data.error || 'Signup failed');
 
-      setUser(data.user);
+      // ❗ FIX: Immediately sync cookie + user from server
+      await fetchUser();  
+
       toast.success('Account created successfully!');
       return { success: true };
     } catch (err) {
@@ -72,6 +74,7 @@ export function AuthProvider({ children }) {
       return { success: false, error: err.message };
     }
   };
+
 
   // ✅ LOGOUT FUNCTION
   const logout = async () => {
