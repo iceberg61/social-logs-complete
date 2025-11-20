@@ -26,7 +26,7 @@ export async function POST(req) {
     //  Send OTP via Resend
     await sendEmail({
       to: email,
-      subject: 'Your Social Password Reset Code',
+      subject: 'Your Chuloenterprise Password Reset Code',
       html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.6;">
           <h2>Reset Your Password</h2>
@@ -34,7 +34,7 @@ export async function POST(req) {
           <p>Use the OTP below to reset your password. It expires in 10 minutes.</p>
           <h1 style="color: #2563eb; letter-spacing: 4px;">${otp}</h1>
           <p>If you didn’t request this, please ignore this message.</p>
-          <p>— The Social-logs Team</p>
+          <p>— The Chuloenterprise Team</p>
         </div>
       `,
     });
