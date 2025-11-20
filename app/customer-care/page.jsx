@@ -25,15 +25,16 @@ export default function CustomerCare() {
               <span>
                 Email:{" "}
                 <a
-                  href="mailto:godstimegodwin111@gmail.com"
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=chuloenterprise@gmail.com"
+                  target="_blank"
                   className="text-blue-600 hover:underline"
                 >
-                  godstimegodwin111@gmail.com
+                  chuloenterprise@gmail.com
                 </a>
               </span>
             </div>
 
-            {/* Normal Phone */}
+            {/* Phone */}
             <div className="flex items-center gap-3">
               <Phone className="w-5 h-5 text-green-600" />
               <span>
@@ -42,22 +43,22 @@ export default function CustomerCare() {
                   href="tel:+2349153607825"
                   className="text-green-600 hover:underline"
                 >
-                  09153607825
+                  08120502003
                 </a>
               </span>
             </div>
 
-            {/* WhatsApp */}
+            {/* WhatsApp Group */}
             <div className="flex items-center gap-3">
               <MessageCircle className="w-5 h-5 text-green-500" />
               <span>
-                WhatsApp:{" "}
+                WhatsApp Group:{" "}
                 <a
-                  href="https://wa.me/2348120502003"
+                  href="https://chat.whatsapp.com/I2CHM9xxTMF1fzy203neWo?mode=wwt"
                   target="_blank"
                   className="text-green-500 hover:underline"
                 >
-                  08120502003
+                  Join Chat
                 </a>
               </span>
             </div>
@@ -79,24 +80,6 @@ export default function CustomerCare() {
 
           </div>
         </section>
-
-        {/* Social Links */}
-        {/* <section className="bg-white border rounded-2xl shadow-sm p-6 space-y-4">
-          <h2 className="text-xl font-semibold text-gray-800 text-center">Connect With Us</h2>
-          <p className="text-gray-600 text-center">Follow us on social media for updates and support.</p>
-
-          <div className="flex justify-center gap-6 text-gray-600">
-            <a href="#" target="_blank" className="hover:text-blue-500 transition">
-              <Twitter className="w-7 h-7" />
-            </a>
-            <a href="#" target="_blank" className="hover:text-pink-500 transition">
-              <Instagram className="w-7 h-7" />
-            </a>
-            <a href="#" target="_blank" className="hover:text-blue-700 transition">
-              <Facebook className="w-7 h-7" />
-            </a>
-          </div>
-        </section> */}
 
         {/* Help Note */}
         <div className="text-center text-gray-600">
