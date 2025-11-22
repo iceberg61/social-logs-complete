@@ -1,48 +1,50 @@
-import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/dbConnect';
-import User from '@/models/User';
-import { sendEmail } from '@/lib/sendEmail';
+// app/api/auth/forgot-password/route.js
+import { NextResponse } from "next/server";
+import dbConnect from "@/lib/dbConnect";
+import User from "@/models/User";
+import sendEmail from "@/lib/sendEmail";
+
+const OTP_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
 export async function POST(req) {
   try {
     await dbConnect();
-    const { email } = await req.json();
+    const { email: rawEmail } = await req.json();
+    const email = (rawEmail || "").trim().toLowerCase();
 
-    //  Check if user exists
+    if (!email) return NextResponse.json({ error: "Email is required" }, { status: 400 });
+
     const user = await User.findOne({ email });
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
+    if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
 
-    //  Generate 6-digit OTP
+    // generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 min expiry
 
-    //  Save OTP to user
     user.otp = otp;
-    user.otpExpiry = otpExpiry;
+    user.otpExpiry = new Date(Date.now() + OTP_TTL_MS);
+    user.otpVerified = false; // reset verification each time
     await user.save();
 
-    //  Send OTP via Resend
+    // send OTP email
     await sendEmail({
-      to: email,
-      subject: 'Your Chuloenterprise Password Reset Code',
+      to: user.email,
+      subject: "Your Chuloenterprise Password Reset Code",
       html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.6;">
           <h2>Reset Your Password</h2>
-          <p>Hello ${user.username || ''},</p>
-          <p>Use the OTP below to reset your password. It expires in 10 minutes.</p>
+          <p>Hello ${user.username || ""},</p>
+          <p>Use the code below to reset your password. It expires in 10 minutes.</p>
           <h1 style="color: #2563eb; letter-spacing: 4px;">${otp}</h1>
-          <p>If you didn’t request this, please ignore this message.</p>
-          <p>— The Chuloenterprise Team</p>
+          <p>If you didn't request this, ignore this email.</p>
         </div>
       `,
     });
 
-    console.log(` OTP sent to ${email}: ${otp}`);
-    return NextResponse.json({ message: 'OTP sent successfully' });
-  } catch (error) {
-    console.error('Forgot Password Error:', error);
-    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+    console.log(`OTP sent to ${user.email}: ${otp}`);
+    return NextResponse.json({ message: "OTP sent successfully" }, { status: 200 });
+
+  } catch (err) {
+    console.error("FORGOT PASSWORD ERROR:", err);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
