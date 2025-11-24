@@ -1,21 +1,18 @@
-import { Resend } from 'resend';
-
+import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function sendEmail({ to, subject, html }) {
+export async function sendEmail(to, subject, html) {
   try {
     const data = await resend.emails.send({
-      from: "Chuloenterprise <onboarding@resend.dev>",
+      from: process.env.EMAIL_FROM,
       to,
       subject,
       html,
     });
-    console.log(' Email sent:', data);
-    return true;
+
+    return { success: true, data };
   } catch (error) {
-    console.error(' Email error:', error);
-    return false;
+    console.error("Email sending error:", error);
+    return { success: false, error };
   }
 }
-
-export default sendEmail;
