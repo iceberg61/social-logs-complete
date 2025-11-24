@@ -43,7 +43,7 @@ export async function POST(req) {
         email: user.email,
         amount: amount * 100,
         reference,
-        callback_url: "https://chuloenterprise.vercel.app/",
+        callback_url: "https://www.chuloenterprise.online/fund",
       }),
     });
 
